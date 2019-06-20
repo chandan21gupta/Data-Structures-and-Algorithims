@@ -6,6 +6,17 @@ class Graph {
   int V;
   Node[] arr;
 
+  class Node{
+    int data;
+    int color;
+    Node next;
+    Node(int data){
+      this.data = data;
+      color = 0;
+    }
+  }
+
+
   Graph(int V){
     this.V = V;
     arr = new Node[this.V];
@@ -36,36 +47,43 @@ class Graph {
     }
   }
 
-  class Node{
-    int data;
-    int color;
-    Node next;
-    Node(int data){
-      this.data = data;
-      color = 0;
+
+  public void BFS(int s){
+    Queue<Node> q = new LinkedList<>();
+    q.add(arr[s]);
+    arr[s].color = 1;
+    while(q.size()>0){
+      Node n = q.remove();
+      System.out.print(n.data+" ");
+      Node temp = n.next;
+      while(temp!=null){
+        if(arr[temp.data].color == 0){
+          arr[temp.data].color = 1;
+          q.add(arr[temp.data]);
+        }
+        temp = temp.next;
+      }
     }
+
   }
 
 
 
-
   public static void main(String[] args){
-    int V = 5;
+    int V = 4;
     Graph graph = new Graph(V);
     graph.edgeMaker(0,1);
     graph.edgeMaker(1,0);
-    graph.edgeMaker(0,4);
-    graph.edgeMaker(4,0);
+    graph.edgeMaker(0,2);
+    graph.edgeMaker(2,0);
     graph.edgeMaker(1,2);
     graph.edgeMaker(2,1);
-    graph.edgeMaker(1,3);
-    graph.edgeMaker(3,1);
-    graph.edgeMaker(1,4);
-    graph.edgeMaker(4,1);
+    graph.edgeMaker(2,0);
+    graph.edgeMaker(0,2);
     graph.edgeMaker(2,3);
     graph.edgeMaker(3,2);
-    graph.edgeMaker(3,4);
-    graph.edgeMaker(4,3);
-    graph.printGraph();
+    graph.edgeMaker(3,3);
+    //graph.printGraph();
+    graph.BFS(2);
   }
 }
