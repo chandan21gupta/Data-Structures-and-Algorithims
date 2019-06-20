@@ -68,22 +68,35 @@ class Graph {
   }
 
 
+  public void DFS(int v){
+    dfs(arr[v]);
+  }
+
+
+  public void dfs(Node s){
+    System.out.print(s.data+" ");
+    arr[s.data].color = 1;
+    Node n = s.next;
+    while(n!=null){
+      if(arr[n.data].color == 0){
+        arr[n.data].color = 1;
+        dfs(arr[n.data]);
+      }
+      n=n.next;
+    }
+  }
+
 
   public static void main(String[] args){
     int V = 4;
     Graph graph = new Graph(V);
     graph.edgeMaker(0,1);
-    graph.edgeMaker(1,0);
     graph.edgeMaker(0,2);
-    graph.edgeMaker(2,0);
     graph.edgeMaker(1,2);
-    graph.edgeMaker(2,1);
     graph.edgeMaker(2,0);
-    graph.edgeMaker(0,2);
     graph.edgeMaker(2,3);
-    graph.edgeMaker(3,2);
     graph.edgeMaker(3,3);
     //graph.printGraph();
-    graph.BFS(2);
+    graph.DFS(2);
   }
 }
