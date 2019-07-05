@@ -10,21 +10,21 @@ class QuickFind {
 		}
 	}
 
-	public boolean connected(int p, int q){
+	public boolean slowconnected(int p, int q){
 		return sets[p] == sets[q];
 	}
 
-	public int find(int p){
+	public int quickfind(int p){
 		return sets[p];
 	}
 
-	public void union(int p,int q) {
-		if(connected(p,q)){
+	public void slowunion(int p,int q) {
+		if(slowconnected(p,q)){
 			return;
 		}
 
-		int pid = sets[p];
-		int qid = sets[q];
+		int pid = quickfind(p);
+		int qid = quickfind(q);
 
 		for(int i=0;i<n;i++){
 			if(sets[i] == pid){
@@ -41,24 +41,76 @@ class QuickFind {
 
 }
 
+class QuickUnion {
+	
+	int[] id;
+	int[] size;
+
+	public QuickUnion(int n){
+		id = new int[n];
+		size = new int[n];
+		for(int i=0;i<n;i++){
+			id[i] = i;
+			size[i] = 1;
+		}
+	}
+
+	public boolean quickconnected(int p, int q){
+		return slowfind(p) == slowfind(q);
+	}
+
+	public int slowfind(int p) {
+		int i = p;
+		while(id[i] != i){
+			i = id[i];
+		}
+		return i;
+	}
+
+	public void quickunion(int p, int q) {
+		if(quickconnected(p,q)){
+			return;
+		}
+
+		if(size[p]<size[q]){
+			int x = slowfind(p);
+			id[x] = slowfind(q);
+			size[q]+=size[p];
+			size[p] = size[q];
+		}
+		else{
+			int x = slowfind(q);
+			id[x] = slowfind(p);
+			size[p]+=size[q];
+			size[q] = size[p];
+		}
+	}
+
+	public void print_id() {
+		for(int i=0;i<id.length;i++){
+			System.out.print(id[i] + " ");
+		}
+	}
+
+
+}
 
 class UnionFind {
 
 	public static void main(String[] args) {
-		QuickFind q = new QuickFind(10);
-		q.union(4,3);
-		q.union(3,8);
-		q.union(6,5);
-		q.union(9,4);
-		q.union(2,1);
-		//q/connected(8,9);
-		//q.connected(5,0);
-		q.union(5,0);
-		q.union(7,2);
-		q.union(6,1);
+		
+		QuickUnion q = new QuickUnion(10);
 
-		q.print_set();
-
-
+		q.quickunion(4,3);
+		q.quickunion(3,8);
+		q.quickunion(6,5);
+		q.quickunion(9,4);
+		q.quickunion(2,1);
+		q.quickunion(5,0);
+		q.quickunion(7,2);
+		q.quickunion(6,1);
+		q.quickunion(7,3);
+		//q.quickunion()
+		q.print_id();
 	}
 }
