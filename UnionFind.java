@@ -1,48 +1,64 @@
+class QuickFind {
+	int n;
+	int[] sets;
+
+	public QuickFind(int n) {
+		this.n = n;
+		sets = new int[n];
+		for(int i=0;i<n;i++){
+			sets[i] = i;
+		}
+	}
+
+	public boolean connected(int p, int q){
+		return sets[p] == sets[q];
+	}
+
+	public int find(int p){
+		return sets[p];
+	}
+
+	public void union(int p,int q) {
+		if(connected(p,q)){
+			return;
+		}
+
+		int pid = sets[p];
+		int qid = sets[q];
+
+		for(int i=0;i<n;i++){
+			if(sets[i] == pid){
+				sets[i] = qid;
+			}
+		}
+	}
+
+	public void print_set(){
+		for(int i=0;i<this.n;i++){
+			System.out.print(sets[i]+" ");
+		}
+	}
+
+}
+
+
 class UnionFind {
 
-    int[] arr;
-    int[] size;
+	public static void main(String[] args) {
+		QuickFind q = new QuickFind(10);
+		q.union(4,3);
+		q.union(3,8);
+		q.union(6,5);
+		q.union(9,4);
+		q.union(2,1);
+		//q/connected(8,9);
+		//q.connected(5,0);
+		q.union(5,0);
+		q.union(7,2);
+		q.union(6,1);
+
+		q.print_set();
 
 
-    public UnionFind(int n) {
-        arr = new int[n+1];
-        size = new int[n+1];
-        for(int i = 0;i < n+1;i++) {
-            arr[i] = i;
-            size[i]+=1;
-        }
-    }
-
-    public int Find(int n) {
-        //int m = n;  Later used for path compression
-        while(arr[n] != n) {
-            n = arr[n];
-        }
-        //arr[m] = n;  For path compression.
-        return n;
-    }
-
-    public void Union(int m, int n) {
-        if(Find(m) == Find(n)){
-            return;
-        }
-        int pid = Find(m);
-        int qid = Find(n);
-        if(size[pid] >= size[qid]) {
-            size[pid] += size[qid];
-            size[qid] = 0;
-            arr[qid] = pid;
-            return ;
-        }
-        size[qid]+=size[pid];
-        size[pid] = 0;
-        arr[pid] = qid;
-        return;
-    }
-
-    public boolean connected(int m, int n) {
-        return Find(m) == Find(n);
-    }
-
-    
+	}
 }
