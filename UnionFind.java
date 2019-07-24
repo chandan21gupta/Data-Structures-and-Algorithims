@@ -1,55 +1,58 @@
-class QuickFind {
-	int n;
-	int[] sets;
+import java.io.*;
+// class QuickFind {
+// 	int n;
+// 	int[] sets;
 
-	public QuickFind(int n) {
-		this.n = n;
-		sets = new int[n];
-		for(int i=0;i<n;i++){
-			sets[i] = i;
-		}
-	}
+// 	public QuickFind(int n) {
+// 		this.n = n;
+// 		sets = new int[n];
+// 		for(int i=0;i<n;i++){
+// 			sets[i] = i;
+// 		}
+// 	}
 
-	public boolean slowconnected(int p, int q){
-		return sets[p] == sets[q];
-	}
+// 	public boolean slowconnected(int p, int q){
+// 		return sets[p] == sets[q];
+// 	}
 
-	public int quickfind(int p){
-		return sets[p];
-	}
+// 	public int quickfind(int p){
+// 		return sets[p];
+// 	}
 
-	public void slowunion(int p,int q) {
-		if(slowconnected(p,q)){
-			return;
-		}
+// 	public void slowunion(int p,int q) {
+// 		if(slowconnected(p,q)){
+// 			return;
+// 		}
 
-		int pid = quickfind(p);
-		int qid = quickfind(q);
+// 		int pid = quickfind(p);
+// 		int qid = quickfind(q);
 
-		for(int i=0;i<n;i++){
-			if(sets[i] == pid){
-				sets[i] = qid;
-			}
-		}
-	}
+// 		for(int i=0;i<n;i++){
+// 			if(sets[i] == pid){
+// 				sets[i] = qid;
+// 			}
+// 		}
+// 	}
 
-	public void print_set(){
-		for(int i=0;i<this.n;i++){
-			System.out.print(sets[i]+" ");
-		}
-	}
+// 	public void print_set(){
+// 		for(int i=0;i<this.n;i++){
+// 			System.out.print(sets[i]+" ");
+// 		}
+// 	}
 
-}
+// }
 
-class QuickUnion {
+
+
+class UnionFind {
 	
 	int[] id;
 	int[] size;
 
-	public QuickUnion(int n){
-		id = new int[n];
-		size = new int[n];
-		for(int i=0;i<n;i++){
+	public UnionFind(int n){
+		id = new int[n+1];
+		size = new int[n+1];
+		for(int i=1;i<n+1;i++){
 			id[i] = i;
 			size[i] = 1;
 		}
@@ -87,30 +90,34 @@ class QuickUnion {
 	}
 
 	public void print_id() {
-		for(int i=0;i<id.length;i++){
+		for(int i=1;i<id.length;i++){
 			System.out.print(id[i] + " ");
 		}
 	}
 
 
-}
 
-class UnionFind {
 
-	public static void main(String[] args) {
-		
-		QuickUnion q = new QuickUnion(10);
+	public static void main(String[] args) throws java.io.IOException {
 
-		q.quickunion(4,3);
-		q.quickunion(3,8);
-		q.quickunion(6,5);
-		q.quickunion(9,4);
-		q.quickunion(2,1);
-		q.quickunion(5,0);
-		q.quickunion(7,2);
-		q.quickunion(6,1);
-		q.quickunion(7,3);
-		//q.quickunion()
-		q.print_id();
+		BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(buffer.readLine());
+		UnionFind q = new UnionFind(n);
+		int q1 = Integer.parseInt(buffer.readLine());
+		for(int i=0;i<q1;i++){
+			String s1 = buffer.readLine();
+			String[] s = s1.split(" ");
+			if(s[0].equals("1")){
+				q.quickunion(Integer.parseInt(s[1]),Integer.parseInt(s[2]));
+			}
+			else{
+				if(q.quickconnected(Integer.parseInt(s[1]),Integer.parseInt(s[2]))){
+					System.out.println("YES");
+				}
+				else{
+					System.out.println("NO");
+				}
+			}
+		}
 	}
 }
